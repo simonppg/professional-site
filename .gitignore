@@ -102,3 +102,7 @@ dist
 
 # TernJS port file
 .tern-port
+
+# Nuxt/storybook
+.nuxt-storybook
+storybook-static

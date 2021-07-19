@@ -1,3 +1,3 @@
 <template>
-  <h1>Hello Test!</h1>
+  <h1>Tests cd workflow!</h1>
 </template>

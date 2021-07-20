@@ -5,8 +5,8 @@
   "main": "index.js",
   "private": true,
   "engines": {
-    "node": "14.9.0",
-    "npm": "6.14.8"
+    "node": "14.17.0",
+    "npm": "7.20.0"
   },
   "scripts": {
     "dev": "cross-env NODE_ENV=development nodemon --exec 'nuxt'",

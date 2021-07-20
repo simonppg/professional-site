@@ -14,7 +14,8 @@
 </template>
 
 <script lang="ts">
-export default {
+import Vue from 'vue'
+export default Vue.extend({
   props: {
     repo: {
       type: Object,
@@ -27,5 +28,5 @@ export default {
       })
     }
   }
-}
+})
 </script>

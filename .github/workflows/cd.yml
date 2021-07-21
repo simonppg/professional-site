@@ -29,6 +29,8 @@ jobs:
 
       - name: npm audit action
         uses: oke-py/npm-audit-action@v1.7.3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Generate
         run: npm run generate

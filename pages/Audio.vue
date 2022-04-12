@@ -13,27 +13,14 @@
       <WhiteButton label="changePitch" @clicked="changePitch" />
     </div>
 
-    <div class="p-10 grid grid-cols-2 gap-4">
-      <div class="p-10 grid gap-4">
-        delay: <span>{{ delay }}</span>
-        <input
-          v-model="delay"
-          type="range"
-          min="2.0"
-          max="3.0"
-          step="0.1"
-        >
-      </div>
-
-      <div class="p-10 grid gap-4">
-        frequency: <span>{{ frequency }}</span>
-        <input
-          v-model="frequency"
-          type="range"
-          min="600"
-          max="800"
-        >
-      </div>
+    <div class="p-10 grid gap-4">
+      frequency: <span>{{ frequency }}</span>
+      <input
+        v-model="frequency"
+        type="range"
+        min="600"
+        max="800"
+      >
     </div>
   </div>
 </template>
@@ -46,7 +33,6 @@ export default Vue.extend({
   components: { WhiteButton },
   data () {
     return {
-      delay: 2.0,
       frequency: 800
     }
   },
@@ -63,7 +49,7 @@ export default Vue.extend({
       this.$audioApp.play()
     },
     stop () {
-      this.$audioApp.stop(this.delay)
+      this.$audioApp.stop()
     },
     changeOscilator () {
       this.$audioApp.randomOscilator()

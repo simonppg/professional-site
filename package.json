@@ -38,8 +38,7 @@
   "dependencies": {
     "@nuxt/typescript-runtime": "^2.0.1",
     "core-js": "^3.8.3",
-    "music-core": "^1.0.0",
-    "nuxt3": "^3.0.0-27501460.04a72f8"
+    "music-core": "^1.0.0"
   },
   "devDependencies": {
     "@nuxt/types": "^2.14.12",
@@ -58,6 +57,7 @@
     "husky": "^4.3.8",
     "lint-staged": "^10.5.3",
     "nodemon": "^2.0.7",
+    "nuxt3": "latest",
     "postcss": "^8.3.5",
     "push-dir": "^0.4.1",
     "tailwindcss": "^2.2.4"

@@ -50,5 +50,9 @@ export default {
 
   // Nuxt/storybook https://storybook.nuxtjs.org/
   storybook: {
+  },
+
+  server: {
+    host: '0.0.0.0'
   }
 }

@@ -1,3 +1,5 @@
+import { Note } from 'music-core'
+
 type OscillatorType = 'custom' | 'sawtooth' | 'sine' | 'square' | 'triangle'
 
 export default class AudioApp {
@@ -32,6 +34,43 @@ export default class AudioApp {
     if (!this.oscilatorNode) { return }
 
     this.oscilatorNode.frequency.value = frequency
+  }
+
+  setNote (noteName: string) {
+    const note = new Note(noteName)
+    console.log(note.sciName())
+    console.log(note.frequency())
+    this.setFrequency(parseFloat(note.frequency()))
+  }
+
+  playCMayorScale () {
+    const INTERVAL = 1000
+    const notes = [
+      'C4',
+      'D4',
+      'E4',
+      'F4',
+      'G4',
+      'A4',
+      'B4',
+      'C5',
+      'B4',
+      'A4',
+      'G4',
+      'F4',
+      'E4',
+      'D4',
+      'C4',
+      'stop'
+    ]
+
+    this.play()
+
+    notes.forEach((item, index) => {
+      setTimeout(() => {
+        if (item === 'stop') { this.stop() } else { this.setNote(item) }
+      }, INTERVAL * index)
+    })
   }
 
   randomPitch () {

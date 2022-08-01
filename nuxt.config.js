@@ -26,6 +26,7 @@ export default {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
+    { src: '~/plugins/AudioPlugin.ts', mode: 'client' }
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -49,5 +50,9 @@ export default {
 
   // Nuxt/storybook https://storybook.nuxtjs.org/
   storybook: {
+  },
+
+  server: {
+    host: '0.0.0.0'
   }
 }

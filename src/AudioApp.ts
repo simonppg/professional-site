@@ -14,8 +14,9 @@ export default class AudioApp {
 
   playExample () {
     this.context = new AudioContext()
-    if (!this.context) { throw new Error('Not supported :(') }
     this.gainNode = this.context.createGain()
+    // this.context = new AudioContext()
+    // if (!this.context) { throw new Error('Not supported :(') }
     this.gainNode.connect(this.context.destination)
 
     // this.basicExample()
@@ -29,6 +30,8 @@ export default class AudioApp {
   }
 
   private thickerTone () {
+    if (typeof this.context === 'undefined') { return }
+
     const oscList = new Array(3)
     const frequency = 440
     const unisonWidth = 10
@@ -42,6 +45,8 @@ export default class AudioApp {
   }
 
   private basicExample () {
+    if (typeof this.context === 'undefined') { return }
+
     const osc = this.context.createOscillator()
     osc.type = 'sawtooth'
     osc.frequency.value = 440
@@ -51,6 +56,8 @@ export default class AudioApp {
   }
 
   private newOscillator (frequency : number, detune: number): OscillatorNode {
+    if (typeof this.context === 'undefined') { throw new TypeError('No AudioContext') }
+
     const osc = this.context.createOscillator()
     osc.type = 'sawtooth'
     osc.frequency.value = frequency
@@ -60,6 +67,9 @@ export default class AudioApp {
   }
 
   private noteOn (frequency: number) {
+    if (typeof this.context === 'undefined') { return }
+    if (typeof this.gainNode === 'undefined') { return }
+
     this.gainNode?.gain.cancelScheduledValues(this.context?.currentTime)
     const osc = this.newOscillator(frequency, 0)
     osc.connect(this.gainNode)
@@ -75,6 +85,8 @@ export default class AudioApp {
   }
 
   private noteOff () {
+    if (typeof this.context === 'undefined') { return }
+
     this.gainNode?.gain.cancelScheduledValues(this.context?.currentTime)
 
     const now = this.context?.currentTime

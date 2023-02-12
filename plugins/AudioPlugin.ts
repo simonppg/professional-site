@@ -1,4 +1,5 @@
 import { Plugin } from '@nuxt/types'
+import Vue from 'vue'
 import AudioApp from '../src/AudioApp'
 
 declare module 'vue/types/vue' {
@@ -23,6 +24,8 @@ declare module 'vuex/types/index' {
 }
 
 const myPlugin: Plugin = (_, inject) => {
-  inject('audioApp', new AudioApp())
+  const audioApp = new AudioApp()
+  inject('audioApp', audioApp)
+  Vue.component('AudioApp', audioApp)
 }
 export default myPlugin

@@ -36,10 +36,10 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
+// import Vue from 'vue'
 import WhiteButton from '@/components/WhiteButton.vue'
 
-export default Vue.extend({
+export default {
   components: { WhiteButton },
   data () {
     return {
@@ -85,5 +85,5 @@ export default Vue.extend({
       this.$audioApp.playExample()
     }
   }
-})
+}
 </script>

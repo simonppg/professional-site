@@ -1,0 +1,1 @@
+import{a as o,b as t,f as n,j as a,e as c,k as s,o as _,h as r}from"./entry.b0bef055.js";const d={},l=c("h1",null,"Hello world!",-1);function i(u,f){const e=s;return _(),t("div",null,[l,n(e,{to:"/Audio"},{default:a(()=>[r(" Audio ")]),_:1})])}const m=o(d,[["render",i]]);export{m as default};

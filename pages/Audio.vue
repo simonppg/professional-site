@@ -12,6 +12,7 @@
       <WhiteButton label="changeOscilator" @clicked="changeOscilator" />
       <WhiteButton label="changePitch" @clicked="changePitch" />
       <WhiteButton label="C Mayor scale" @clicked="playCMayorScale" />
+      <WhiteButton label="playExample" @clicked="playExample" />
     </div>
 
     <div class="p-10 grid gap-4">
@@ -62,7 +63,7 @@ export default Vue.extend({
     }
   },
   mounted () {
-    console.log('mounted')
+    // console.log('mounted')
   },
   methods: {
     play () {
@@ -79,6 +80,9 @@ export default Vue.extend({
     },
     playCMayorScale () {
       this.$audioApp.playCMayorScale()
+    },
+    playExample () {
+      this.$audioApp.playExample()
     }
   }
 })

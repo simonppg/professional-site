@@ -1,9 +1,9 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   target: 'static',
-  app: {
-    baseURL: '/professional-site/'
-  },
+  // app: {
+  //   baseURL: '/professional-site/'
+  // },
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {

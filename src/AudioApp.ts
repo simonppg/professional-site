@@ -1,9 +1,11 @@
 import { Note } from 'music-core'
+import AudioFactory from './AudioFactory'
 
 type OscillatorType = 'custom' | 'sawtooth' | 'sine' | 'square' | 'triangle'
 
 export default class AudioApp {
   private audioContext: AudioContext
+  private factory: AudioFactory
   private gainNode: GainNode
   private oscilatorNode: OscillatorNode | undefined
   private oscilatorTypes: OscillatorType[] = ['sine', 'square', 'triangle', 'sawtooth']
@@ -14,41 +16,35 @@ export default class AudioApp {
 
   constructor (audioContext: AudioContext) {
     this.audioContext = audioContext
+    this.factory = new AudioFactory(audioContext)
     this.gainNode = this.audioContext.createGain()
     this.gainNode.connect(this.audioContext.destination)
   }
 
   playExample () {
-    // this.basicExample()
     // this.thickerTone()
     this.onOffNote()
   }
 
   private onOffNote () {
     this.noteOn(440)
-    this.noteOff()
+    setTimeout(() => this.noteOff(), 1000)
   }
 
   private thickerTone () {
     const oscList = new Array(3)
     const frequency = 440
     const unisonWidth = 10
-    oscList[0] = this.newOscillator(frequency, 0)
-    oscList[1] = this.newOscillator(frequency, -unisonWidth)
-    oscList[2] = this.newOscillator(frequency, unisonWidth)
+    oscList[0] = this.factory.swatoothOscillator(frequency, 0)
+    oscList[1] = this.factory.swatoothOscillator(frequency, -unisonWidth)
+    oscList[2] = this.factory.swatoothOscillator(frequency, unisonWidth)
+
+    oscList.forEach(o => o.connect(this.gainNode))
+    oscList.forEach(o => o.start())
 
     oscList[0].stop(this.audioContext.currentTime + 2)
     oscList[1].stop(this.audioContext.currentTime + 2)
     oscList[2].stop(this.audioContext.currentTime + 2)
-  }
-
-  private basicExample () {
-    const osc = this.audioContext.createOscillator()
-    osc.type = 'sawtooth'
-    osc.frequency.value = 440
-    osc.connect(this.audioContext.destination)
-    osc.start()
-    osc.stop(this.audioContext.currentTime + 2)
   }
 
   private newOscillator (frequency : number, detune: number): OscillatorNode {

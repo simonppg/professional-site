@@ -22,9 +22,18 @@ declare module 'vuex/types/index' {
 }
 
 const myPlugin = defineNuxtPlugin((nuxtApp) => {
+  let audioApp
+
+  try {
+    const audioContext = new AudioContext()
+    audioApp = new AudioApp(audioContext)
+  } catch (e: NotSupporterError) {
+    alert("Audio features are not supported :'(")
+  }
+
   return {
     provide: {
-      audioApp: new AudioApp()
+      audioApp
     }
   }
 })

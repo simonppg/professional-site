@@ -9,8 +9,6 @@
     <div class="p-10 grid grid-cols-4 gap-4">
       <WhiteButton label="Play" @clicked="play" />
       <WhiteButton label="Stop" @clicked="stop" />
-      <WhiteButton label="changeOscilator" @clicked="changeOscilator" />
-      <WhiteButton label="changePitch" @clicked="changePitch" />
       <WhiteButton label="C Mayor scale" @clicked="playCMayorScale" />
       <WhiteButton label="playExample" @clicked="playExample" />
     </div>
@@ -71,12 +69,6 @@ export default {
     },
     stop () {
       this.$audioApp.stop()
-    },
-    changeOscilator () {
-      this.$audioApp.randomOscilator()
-    },
-    changePitch () {
-      this.$audioApp.randomPitch()
     },
     playCMayorScale () {
       this.$audioApp.playCMayorScale()

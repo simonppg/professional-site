@@ -1,15 +1,11 @@
 import { Note } from 'music-core'
 import AudioFactory from './AudioFactory'
 
-type OscillatorType = 'custom' | 'sawtooth' | 'sine' | 'square' | 'triangle'
-
 export default class AudioApp {
   private audioContext: AudioContext
   private factory: AudioFactory
   private gainNode: GainNode
-  private oscilatorNode: OscillatorNode | undefined
-  private oscilatorTypes: OscillatorType[] = ['sine', 'square', 'triangle', 'sawtooth']
-  private pitches = [830, 174]
+  private oscilatorNode: OscillatorNode
   private STAGE_MAX_TIME = 1
   private ADSR = { attack: 0.9, decay: 10, sustain: 10, release: 0.9 }
   // private ADSR = { attack: 0.2, decay: 0, sustain: 1, release: 0.3 }
@@ -19,6 +15,7 @@ export default class AudioApp {
     this.factory = new AudioFactory(audioContext)
     this.gainNode = this.audioContext.createGain()
     this.gainNode.connect(this.audioContext.destination)
+    this.oscilatorNode = this.audioContext.createOscillator()
   }
 
   playExample () {
@@ -47,6 +44,7 @@ export default class AudioApp {
     oscList[2].stop(this.audioContext.currentTime + 2)
   }
 
+  // TODO(simonppg): Remove this method
   private newOscillator (frequency : number, detune: number): OscillatorNode {
     const osc = this.audioContext.createOscillator()
     osc.type = 'sawtooth'
@@ -82,26 +80,17 @@ export default class AudioApp {
   }
 
   play () {
-    this.oscilatorNode = this.audioContext.createOscillator()
     this.oscilatorNode.type = 'triangle'
     this.oscilatorNode.connect(this.gainNode)
     this.oscilatorNode.start(0)
   }
 
-  randomOscilator () {
-    if (!this.oscilatorNode) { return }
-
-    const randomIndex = this.randomIndex(this.oscilatorTypes)
-    this.oscilatorNode.type = this.oscilatorTypes[randomIndex]
-  }
-
-  private randomIndex (arr: any[]) {
-    return Math.floor(Math.random() * arr.length)
+  stop () {
+    this.oscilatorNode.stop()
+    this.oscilatorNode = this.factory.randomOscilator()
   }
 
   setFrequency (frequency: number) {
-    if (!this.oscilatorNode) { return }
-
     this.oscilatorNode.frequency.value = frequency
   }
 
@@ -140,22 +129,5 @@ export default class AudioApp {
         if (item === 'stop') { this.stop() } else { this.setNote(item) }
       }, INTERVAL * index)
     })
-  }
-
-  randomPitch () {
-    if (!this.oscilatorNode) { return }
-
-    const randomIndex = this.randomIndex(this.pitches)
-    this.oscilatorNode.frequency.value = this.pitches[randomIndex]
-  }
-
-  private stopOcilator () {
-    if (!this.oscilatorNode) { return }
-
-    this.oscilatorNode.stop()
-  }
-
-  stop () {
-    this.stopOcilator()
   }
 }

@@ -1,9 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   target: 'static',
-  // app: {
-  //   baseURL: '/professional-site/'
-  // },
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
@@ -32,12 +29,6 @@ export default defineNuxtConfig({
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
-
-  // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
-  // buildModules: [
-  //   // https://go.nuxtjs.dev/typescript
-  //   '@nuxt/typescript-build'
-  // ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [

@@ -32,7 +32,7 @@ export default class AudioApp {
     const oscList = new Array(3)
     const frequency = 440
     const unisonWidth = 10
-    oscList[0] = this.factory.swatoothOscillator(frequency, 0)
+    oscList[0] = this.factory.swatoothOscillator(frequency)
     oscList[1] = this.factory.swatoothOscillator(frequency, -unisonWidth)
     oscList[2] = this.factory.swatoothOscillator(frequency, unisonWidth)
 
@@ -44,19 +44,10 @@ export default class AudioApp {
     oscList[2].stop(this.audioContext.currentTime + 2)
   }
 
-  // TODO(simonppg): Remove this method
-  private newOscillator (frequency : number, detune: number): OscillatorNode {
-    const osc = this.audioContext.createOscillator()
-    osc.type = 'sawtooth'
-    osc.frequency.value = frequency
-    osc.detune.value = detune
-    osc.start()
-    return osc
-  }
-
   private noteOn (frequency: number) {
     this.gainNode.gain.cancelScheduledValues(this.audioContext.currentTime)
-    const osc = this.newOscillator(frequency, 0)
+    const osc = this.factory.swatoothOscillator(frequency)
+    osc.start()
     osc.connect(this.gainNode)
 
     const now = this.audioContext.currentTime

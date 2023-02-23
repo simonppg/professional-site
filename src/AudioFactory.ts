@@ -8,7 +8,7 @@ export default class AudioFactory {
     this.audioContext = audioContext
   }
 
-  public swatoothOscillator (frequency: number, detune: number) {
+  public swatoothOscillator (frequency: number, detune: number = 0) {
     const osc = this.newOscillator(frequency, detune)
     osc.type = 'sawtooth'
     return osc

@@ -1,8 +1,6 @@
-export default {
+// https://nuxt.com/docs/api/configuration/nuxt-config
+export default defineNuxtConfig({
   target: 'static',
-  router: {
-    base: '/professional-site/'
-  },
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
@@ -32,16 +30,9 @@ export default {
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
 
-  // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
-  buildModules: [
-    // https://go.nuxtjs.dev/typescript
-    '@nuxt/typescript-build',
-    // https://tailwindcss.com/docs/guides/nuxtjs
-    '@nuxtjs/tailwindcss'
-  ],
-
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
+    '@nuxtjs/tailwindcss'
   ],
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
@@ -55,4 +46,4 @@ export default {
   server: {
     host: '0.0.0.0'
   }
-}
+})

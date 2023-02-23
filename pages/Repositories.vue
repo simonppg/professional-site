@@ -6,9 +6,8 @@
 
 <script lang="ts">
 import RepositoryItem from '@/components/RepositoryItem.vue'
-import Vue from 'vue'
 
-export default Vue.extend({
+export default {
   components: { RepositoryItem },
   data () {
     return {
@@ -30,5 +29,5 @@ export default Vue.extend({
       }
     })
   }
-})
+}
 </script>

@@ -9,8 +9,6 @@
     <div class="p-10 grid grid-cols-4 gap-4">
       <WhiteButton label="Play" @clicked="play" />
       <WhiteButton label="Stop" @clicked="stop" />
-      <WhiteButton label="changeOscilator" @clicked="changeOscilator" />
-      <WhiteButton label="changePitch" @clicked="changePitch" />
       <WhiteButton label="C Mayor scale" @clicked="playCMayorScale" />
       <WhiteButton label="playExample" @clicked="playExample" />
     </div>
@@ -36,10 +34,10 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
+// import Vue from 'vue'
 import WhiteButton from '@/components/WhiteButton.vue'
 
-export default Vue.extend({
+export default {
   components: { WhiteButton },
   data () {
     return {
@@ -72,12 +70,6 @@ export default Vue.extend({
     stop () {
       this.$audioApp.stop()
     },
-    changeOscilator () {
-      this.$audioApp.randomOscilator()
-    },
-    changePitch () {
-      this.$audioApp.randomPitch()
-    },
     playCMayorScale () {
       this.$audioApp.playCMayorScale()
     },
@@ -85,5 +77,5 @@ export default Vue.extend({
       this.$audioApp.playExample()
     }
   }
-})
+}
 </script>

@@ -5,8 +5,7 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-export default Vue.extend({
+export default {
   props: {
     label: {
       type: String,
@@ -18,5 +17,5 @@ export default Vue.extend({
       this.$emit('clicked')
     }
   }
-})
+}
 </script>

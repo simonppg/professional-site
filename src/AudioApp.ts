@@ -1,64 +1,52 @@
 import { Note } from 'music-core'
-
-type OscillatorType = 'custom' | 'sawtooth' | 'sine' | 'square' | 'triangle'
+import AudioFactory from './AudioFactory'
 
 export default class AudioApp {
-  private context: AudioContext | undefined
-  private gainNode: GainNode | undefined
-  private oscilatorNode: OscillatorNode | undefined
-  private oscilatorTypes: OscillatorType[] = ['sine', 'square', 'triangle', 'sawtooth']
-  private pitches = [830, 174]
+  private audioContext: AudioContext
+  private factory: AudioFactory
+  private gainNode: GainNode
+  private oscilatorNode: OscillatorNode
   private STAGE_MAX_TIME = 1
   private ADSR = { attack: 0.9, decay: 10, sustain: 10, release: 0.9 }
   // private ADSR = { attack: 0.2, decay: 0, sustain: 1, release: 0.3 }
 
-  playExample () {
-    this.context = new AudioContext()
-    this.gainNode = this.context.createGain()
-    // this.context = new AudioContext()
-    // if (!this.context) { throw new Error('Not supported :(') }
-    this.gainNode.connect(this.context.destination)
+  constructor (audioContext: AudioContext) {
+    this.audioContext = audioContext
+    this.factory = new AudioFactory(audioContext)
+    this.gainNode = this.audioContext.createGain()
+    this.gainNode.connect(this.audioContext.destination)
+    this.oscilatorNode = this.audioContext.createOscillator()
+  }
 
-    // this.basicExample()
+  playExample () {
     // this.thickerTone()
     this.onOffNote()
   }
 
   private onOffNote () {
     this.noteOn(440)
-    this.noteOff()
+    setTimeout(() => this.noteOff(), 1000)
   }
 
   private thickerTone () {
-    if (typeof this.context === 'undefined') { return }
-
     const oscList = new Array(3)
     const frequency = 440
     const unisonWidth = 10
-    oscList[0] = this.newOscillator(frequency, 0)
-    oscList[1] = this.newOscillator(frequency, -unisonWidth)
-    oscList[2] = this.newOscillator(frequency, unisonWidth)
+    oscList[0] = this.factory.swatoothOscillator(frequency, 0)
+    oscList[1] = this.factory.swatoothOscillator(frequency, -unisonWidth)
+    oscList[2] = this.factory.swatoothOscillator(frequency, unisonWidth)
 
-    oscList[0].stop(this.context.currentTime + 2)
-    oscList[1].stop(this.context.currentTime + 2)
-    oscList[2].stop(this.context.currentTime + 2)
+    oscList.forEach(o => o.connect(this.gainNode))
+    oscList.forEach(o => o.start())
+
+    oscList[0].stop(this.audioContext.currentTime + 2)
+    oscList[1].stop(this.audioContext.currentTime + 2)
+    oscList[2].stop(this.audioContext.currentTime + 2)
   }
 
-  private basicExample () {
-    if (typeof this.context === 'undefined') { return }
-
-    const osc = this.context.createOscillator()
-    osc.type = 'sawtooth'
-    osc.frequency.value = 440
-    osc.connect(this.context.destination)
-    osc.start()
-    osc.stop(this.context.currentTime + 2)
-  }
-
+  // TODO(simonppg): Remove this method
   private newOscillator (frequency : number, detune: number): OscillatorNode {
-    if (typeof this.context === 'undefined') { throw new TypeError('No AudioContext') }
-
-    const osc = this.context.createOscillator()
+    const osc = this.audioContext.createOscillator()
     osc.type = 'sawtooth'
     osc.frequency.value = frequency
     osc.detune.value = detune
@@ -67,59 +55,42 @@ export default class AudioApp {
   }
 
   private noteOn (frequency: number) {
-    if (typeof this.context === 'undefined') { return }
-    if (typeof this.gainNode === 'undefined') { return }
-
-    this.gainNode?.gain.cancelScheduledValues(this.context?.currentTime)
+    this.gainNode.gain.cancelScheduledValues(this.audioContext.currentTime)
     const osc = this.newOscillator(frequency, 0)
     osc.connect(this.gainNode)
 
-    const now = this.context.currentTime
+    const now = this.audioContext.currentTime
     const attackDuration = this.ADSR.attack * this.STAGE_MAX_TIME
     const attackEndTime = now + attackDuration
     const decayDuration = this.ADSR.decay * this.STAGE_MAX_TIME
 
-    this.gainNode?.gain.setValueAtTime(0, this.context?.currentTime)
-    this.gainNode?.gain.linearRampToValueAtTime(1, attackEndTime)
-    this.gainNode?.gain.setTargetAtTime(this.ADSR.sustain, attackEndTime, decayDuration)
+    this.gainNode.gain.setValueAtTime(0, this.audioContext.currentTime)
+    this.gainNode.gain.linearRampToValueAtTime(1, attackEndTime)
+    this.gainNode.gain.setTargetAtTime(this.ADSR.sustain, attackEndTime, decayDuration)
   }
 
   private noteOff () {
-    if (typeof this.context === 'undefined') { return }
+    this.gainNode.gain.cancelScheduledValues(this.audioContext.currentTime)
 
-    this.gainNode?.gain.cancelScheduledValues(this.context?.currentTime)
-
-    const now = this.context?.currentTime
+    const now = this.audioContext.currentTime
     const releaseDuration = this.ADSR.release * this.STAGE_MAX_TIME
     const releaseEndTime = now + releaseDuration
-    this.gainNode?.gain.setValueAtTime(this.gainNode.gain.value, now)
-    this.gainNode?.gain.linearRampToValueAtTime(0, releaseEndTime)
+    this.gainNode.gain.setValueAtTime(this.gainNode.gain.value, now)
+    this.gainNode.gain.linearRampToValueAtTime(0, releaseEndTime)
   }
 
   play () {
-    this.context = new AudioContext()
-    this.gainNode = this.context.createGain()
-    this.gainNode.connect(this.context.destination)
-    this.oscilatorNode = this.context.createOscillator()
     this.oscilatorNode.type = 'triangle'
     this.oscilatorNode.connect(this.gainNode)
     this.oscilatorNode.start(0)
   }
 
-  randomOscilator () {
-    if (!this.oscilatorNode) { return }
-
-    const randomIndex = this.randomIndex(this.oscilatorTypes)
-    this.oscilatorNode.type = this.oscilatorTypes[randomIndex]
-  }
-
-  private randomIndex (arr: any[]) {
-    return Math.floor(Math.random() * arr.length)
+  stop () {
+    this.oscilatorNode.stop()
+    this.oscilatorNode = this.factory.randomOscilator()
   }
 
   setFrequency (frequency: number) {
-    if (!this.oscilatorNode) { return }
-
     this.oscilatorNode.frequency.value = frequency
   }
 
@@ -158,22 +129,5 @@ export default class AudioApp {
         if (item === 'stop') { this.stop() } else { this.setNote(item) }
       }, INTERVAL * index)
     })
-  }
-
-  randomPitch () {
-    if (!this.oscilatorNode) { return }
-
-    const randomIndex = this.randomIndex(this.pitches)
-    this.oscilatorNode.frequency.value = this.pitches[randomIndex]
-  }
-
-  private stopOcilator () {
-    if (!this.oscilatorNode) { return }
-
-    this.oscilatorNode.stop()
-  }
-
-  stop () {
-    this.stopOcilator()
   }
 }
